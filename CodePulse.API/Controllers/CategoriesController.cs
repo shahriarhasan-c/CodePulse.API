@@ -73,6 +73,7 @@ namespace CodePulse.API.Controllers
         }
 
         [HttpPut]
+        [Route("{id:Guid}")]
         public async Task<IActionResult> EditCategory([FromRoute] Guid id, UpdateCategoryRequestDTO request)
         {
             var category = new Category
