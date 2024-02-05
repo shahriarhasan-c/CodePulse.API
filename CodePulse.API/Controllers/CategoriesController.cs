@@ -43,11 +43,11 @@ namespace CodePulse.API.Controllers
             //Map Domain Model to DTO
 
             var response = new List<CategoryDTO>();
-            foreach(var category in categories)
+            foreach (var category in categories)
             {
                 response.Add(new CategoryDTO
                 {
-                    Id=category.Id,
+                    Id = category.Id,
                     Name = category.Name,
                     UrlHandle = category.UrlHandle
                 });
@@ -59,8 +59,8 @@ namespace CodePulse.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetCatagoryById([FromRoute] Guid id)
         {
-           var existingCategory = await categoryRepository.GetById(id);
-            if(existingCategory is null) {
+            var existingCategory = await categoryRepository.GetById(id);
+            if (existingCategory is null) {
                 return NotFound();
             }
             var response = new CategoryDTO
@@ -80,12 +80,12 @@ namespace CodePulse.API.Controllers
             {
                 Id = id,
                 Name = request.Name,
-                UrlHandle = request.UrlHandle   
+                UrlHandle = request.UrlHandle
             };
             await categoryRepository.UpdateAsync(category);
-            if(category == null)
+            if (category == null)
             {
-                return NotFound();  
+                return NotFound();
             }
             var response = new CategoryDTO
             {
@@ -95,5 +95,22 @@ namespace CodePulse.API.Controllers
             };
             return Ok(response);
         }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] Guid id)
+        {
+           var category = await categoryRepository.DeleteAsync(id);
+            if (category is null)
+            {
+                return NotFound();
+            }
+            var response = new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle
+            };
+            return Ok(response);
+        } 
     }
 }
