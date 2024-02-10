@@ -30,8 +30,10 @@ namespace CodePulse.API.Controllers
                 Title = request.Title,
                 UrlHandle = request.UrlHandle
             };
-            var response = new CreateBlogPostRequestDto
+            blogPost = await blogPostRepository.CreateAsync(blogPost);
+            var response = new BlogPostDTO
             {
+                Id = blogPost.Id,
                 Author = blogPost.Author,
                 Content = blogPost.Content,
                 FeaturedImageUrl = blogPost.FeaturedImageUrl,
