@@ -95,5 +95,35 @@ namespace CodePulse.API.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetBlogPostById([FromRoute] Guid id)
+        {
+           var blogPost = await blogPostRepository.GetByIdAsync(id);
+            if(blogPost is null)
+            {
+                return NotFound();
+            }
+            var response = new BlogPostDTO
+            {
+                Id = blogPost.Id,
+                Author = blogPost.Author,
+                Content = blogPost.Content,
+                Title = blogPost.Title,
+                UrlHandle = blogPost.UrlHandle,
+                PublishedDate = blogPost.PublishedDate,
+                ShortDescription = blogPost.ShortDescription,
+                FeaturedImageUrl = blogPost.FeaturedImageUrl,
+                isVisible = blogPost.isVisible,
+                Categories = blogPost.Categories.Select(x => new CategoryDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle
+                }).ToList()
+            };
+            return Ok(response);
+        }
     }
 }
